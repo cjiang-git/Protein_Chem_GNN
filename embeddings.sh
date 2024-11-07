@@ -1,0 +1,1 @@
+python extract.py esm2_t33_650M_UR50D /mnt/d/data/stringdb_seq.fa /mnt/d/data/string_emb --repr_layers -1  --include mean
