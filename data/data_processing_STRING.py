@@ -34,6 +34,8 @@ class StringDB_Dataset(Dataset):
 
     
     def get_esm_embeddings(self,out_dir):
+        # update to include check for existing files
+
         client = ESM3.from_pretrained(self.esm_model)
         with open(self.fasta_path) as handle:
             curr_seq = 0
