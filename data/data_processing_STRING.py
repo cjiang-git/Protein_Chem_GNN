@@ -11,8 +11,10 @@ from torch_geometric.data import Dataset
 from tqdm import tqdm
 from huggingface_hub import login
 import torch, gc
+import pickle
+import matplotlib
 
-login()
+
 
 class StringDB_Dataset(Dataset):
     # esm_model must end in .pt for local model.
@@ -21,13 +23,7 @@ class StringDB_Dataset(Dataset):
         self.fasta_path = fasta_path
         self.esm_model = esm_model
         self.data_cols = self.get_column_names()
-        '''
-        self.data = self.data.dropna()
-        self.data = self.data.reset_index(drop=True)
-        self.data = self.data.drop_duplicates()
-        self.data = self.data.reset_index(drop=True)
-        self.data = self.data.drop(columns=['Unnamed: 0'])
-        '''
+
     
     def get_column_names(self):
         if os.path.exists(self.data_path):
@@ -40,20 +36,33 @@ class StringDB_Dataset(Dataset):
     def get_esm_embeddings(self,out_dir):
         client = ESM3.from_pretrained(self.esm_model)
         with open(self.fasta_path) as handle:
-            iter = 0
+            curr_seq = 0
             for record in tqdm(SeqIO.parse(handle, "fasta")):
                 label = record.id
                 if not os.path.exists(out_dir):
                     os.makedirs(out_dir)
                 output_file = os.path.join(out_dir,f"{label}.pt")
-                protein = ESMProtein(sequence=(str(record.seq)))
-                protein_tensor = client.encode(protein)
-                output = client.forward_and_sample(protein_tensor, SamplingConfig(return_mean_embedding=True))
-                result = {"label": record.id, "embeddings": output.mean_embedding}
+                if len(record.seq) > 1024:
+                    if len(record.seq) > 4096:
+                        continue
+                    seq = record.seq[:1024]
+                else:
+                    seq = record.seq
+                
+                curr_seq += len(str(seq))
+                if curr_seq > 4096*2:
+                    torch.cuda.empty_cache()
+                    gc.collect()
+                    curr_seq = len(str(seq))
 
-                gc.collect()
-                torch.cuda.empty_cache()
-                iter+=1
+                protein = ESMProtein(sequence=(str(seq)))
+                protein_tensor = client.encode(protein)
+                #f = open("debug.txt", "a")
+                #f.write(f"iter: {iter},{len(str(seq))}\n")
+                #f.close()
+                output = client.forward_and_sample(protein_tensor, SamplingConfig(return_mean_embedding=True)).mean_embedding.detach().cpu().numpy()
+                result = {"label": record.id, "embeddings": output}
+                
 
                 torch.save(result,output_file)
 
@@ -61,4 +70,4 @@ class StringDB_Dataset(Dataset):
     def load_data(self,data_path):
         if os.path.exists(data_path):
             data = pd.read_csv(data_path)
-            return data     
+            return data
