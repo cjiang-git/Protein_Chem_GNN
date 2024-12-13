@@ -39,7 +39,16 @@ This results in heterogenous graph with
 ![Overview](./figures/Figure1_Overview.png)
 
 # Ablation Study
+To illustarte the effect of pretrained embeddings, GNN, and the nature of dataset on model performance, 8 different training schemes were deployed:
 
+1. Training data percentage: 25%, Use pretrained embeddings: Yes, Use GNN: Yes
+2. Training data percentage: 25%, Use pretrained embeddings: Yes, Use GNN: No
+3. Training data percentage: 25%, Use pretrained embeddings: No, Use GNN: Yes
+4. Training data percentage: 25%, Use pretrained embeddings: No, Use GNN: No
+5. Training data percentage: 2.5%, Use pretrained embeddings: Yes, Use GNN: Yes
+6. Training data percentage: 2.5%, Use pretrained embeddings: Yes, Use GNN: No
+7. Training data percentage: 2.5%, Use pretrained embeddings: No, Use GNN: Yes
+8. Training data percentage: 2.5%, Use pretrained embeddings: No, Use GNN: No
 
 # Result
 
