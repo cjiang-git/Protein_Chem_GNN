@@ -38,6 +38,43 @@ This results in heterogenous graph with
 # Model
 ![Overview](./figures/Figure1_Overview.png)
 
+
+```
+Model(
+  (protein_lin): MLP(
+    (lin1): Linear(in_features=1536, out_features=64, bias=True)
+    (lin2): Linear(in_features=64, out_features=64, bias=True)
+    (laynorm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    (laynorm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    (drop1): Dropout(p=0.2, inplace=False)
+    (drop2): Dropout(p=0.2, inplace=False)
+  )
+  (chemical_lin): MLP(
+    (lin1): Linear(in_features=768, out_features=64, bias=True)
+    (lin2): Linear(in_features=64, out_features=64, bias=True)
+    (laynorm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    (laynorm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    (drop1): Dropout(p=0.2, inplace=False)
+    (drop2): Dropout(p=0.2, inplace=False)
+  )
+  (protein_embs): Embedding(7273, 1536)
+  (chemical_embs): Embedding(12442, 768)
+  (gnn): GraphModule(
+    (conv1): ModuleDict(
+      (protein__protein_protein__protein): SAGEConv(64, 64, aggr=mean)
+      (chemical__chemical_protein__protein): SAGEConv(64, 64, aggr=mean)
+      (chemical__chemical_chemical__chemical): SAGEConv(64, 64, aggr=mean)
+      (protein__rev_chemical_protein__chemical): SAGEConv(64, 64, aggr=mean)
+    )
+    (conv2): ModuleDict(
+      (protein__protein_protein__protein): SAGEConv(64, 64, aggr=mean)
+      (chemical__chemical_protein__protein): SAGEConv(64, 64, aggr=mean)
+      (chemical__chemical_chemical__chemical): SAGEConv(64, 64, aggr=mean)
+      (protein__rev_chemical_protein__chemical): SAGEConv(64, 64, aggr=mean)
+    )
+  )
+  (classifier): Classifier()
+```
 # Ablation Study
 To illustarte the effect of pretrained embeddings, GNN, and the nature of dataset on model performance, 8 different training schemes were deployed:
 
