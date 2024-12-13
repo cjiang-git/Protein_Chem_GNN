@@ -52,6 +52,18 @@ To illustarte the effect of pretrained embeddings, GNN, and the nature of datase
 
 # Result
 
+### Subgraph of the heterogenous graph
+![subgraph](./figures/Figure3_Subgraph.png)
+
+### Embeddings visualization (ChemBERTa)
+![embeddings](./figures/Figure2_Embeddings.png)
+
+### Train and Val Loss (Use 25% Train and Val data)
+![Loss](./figures/Figure4_LossTrainVal.png)
+
+### AUC on Test set (Use 25% data to train)
+![AUC](./figures/Figure5_AUC.png)
+
 # Code
 
 - chemicals: containing script to embed SMILES using ChemBERTa
@@ -62,8 +74,10 @@ To illustarte the effect of pretrained embeddings, GNN, and the nature of datase
 
 [1] Ziniu Hu, Yuxiao Dong, Kuansan Wang, and Yizhou Sun. 2020. Heterogeneous Graph Transformer. In Proceedings of The Web Conference 2020 (WWW ’20). Association for Computing
 Machinery, New York, NY, USA, 2704–2710. https://doi.org/10.1145/3366423.3380027
+
 [2] Szklarczyk, Damian, et al. “The STRING Database in 2023: Protein-Protein Association Networks and Functional Enrichment Analyses for Any Sequenced Genome of Interest.” Nucleic Acids
 Research, vol. 51, no. D1, Jan. 2023, pp. D638–46. PubMed, https://doi.org/10.1093/nar/gkac1000.
+
 [3] STITCH 5: Augmenting Protein–Chemical Interaction Networks with
 Tissue and Affinity Data | Nucleic Acids Research | Oxford Academic.
 https://academic.oup.com/nar/article/44/D1/D380/2503089. Accessed 22 Oct. 2024.
