@@ -64,6 +64,14 @@ To illustarte the effect of pretrained embeddings, GNN, and the nature of datase
 ### AUC on Test set (Use 25% data to train)
 ![AUC](./figures/Figure5_AUC.png)
 
+### AUC results
+
+| Train Size               | With Pretrained Embeddings | No Pretrain Embeddings | With Pretrained Embeddings (2.5%) | No Pretrain Embeddings (2.5%) |
+|--------------------------|----------------------------|-------------------------|-----------------------------------|-------------------------------|
+| **With GNN**             | 0.9714                    | 0.9675                 | 0.9354                            | 0.9309                       |
+| **No GNN**               | 0.8438                    | 0.913                  | 0.8184                            | 0.8781                       |
+
+
 # Code
 
 - chemicals: containing script to embed SMILES using ChemBERTa
